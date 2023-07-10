@@ -51,7 +51,6 @@ class Listing(models.Model):
 
     realtor = models.ForeignKey(Realtor, on_delete=models.DO_NOTHING, related_name='realtor')
     title = models.CharField(max_length=150)
-    slug = models.CharField(max_length=200, unique=True)
     address = models.CharField(max_length=150)
     city = models.CharField(max_length=100)
     province = models.CharField(max_length=50, choices=Provinces.choices, default=Provinces.EASTERN_CAPE)
@@ -91,13 +90,6 @@ class Listing(models.Model):
 
     def __str__(self):
         return self.title
-    
-    def rand_slug(self):
-        return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.rand_slug() + "-" + self.title)
-        super(Listing, self).save(*args, **kwargs)
 
 
 class Photo(models.Model):
@@ -117,4 +109,3 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.email
-        
