@@ -40,8 +40,6 @@ ALLOWED_HOSTS = ['*']
 
 DEBUG = env('DEBUG')
 
-print(DEBUG)
-
 # Application definition
 
 INSTALLED_APPS = [
