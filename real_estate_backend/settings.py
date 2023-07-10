@@ -34,10 +34,13 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+DEBUG = env('DEBUG')
+
+print(DEBUG)
 
 # Application definition
 
@@ -110,17 +113,32 @@ WSGI_APPLICATION = 'real_estate_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
+if DEBUG == True:
 
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('DB_NAME'),
-        'USER': env('PRD_DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('PRD_HOST'),
-        'PORT': '5432',
+    DATABASES = {
+
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': env('DB_NAME'),
+            'USER': env('DEV_DB_USER'),
+            'PASSWORD': env('DEV_DB_PASSWORD'),
+            'HOST': env('DEV_HOST'),
+            'PORT': '5432',
+        }
     }
-}
+else:
+    DATABASES = {
+
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': env('DB_NAME'),
+            'USER': env('PRD_DB_USER'),
+            'PASSWORD': env('PRD_DB_PASSWORD'),
+            'HOST': env('PRD_HOST'),
+            'PORT': '5432',
+        }
+    }
+
 
 # DATABASES = {
 #     'default': {
@@ -164,12 +182,30 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+USE_S3 = env('USE_S3')
+
+if USE_S3:
+    # aws settings
+    AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_SIGNATURE_NAME = 's3v4',
+    AWS_S3_REGION_NAME = 'us-east-1'
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_DEFAULT_ACL =  None
+    AWS_S3_VERITY = True
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+else:
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

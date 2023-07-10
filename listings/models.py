@@ -34,8 +34,9 @@ class Listing(models.Model):
     
     class HomeType(models.TextChoices):
         HOUSE = 'House'
-        CONDO = 'Condo'
+        APARTMENTS = 'Apartments'
         TOWNHOUSE = 'Townhouse'
+        VACANT_LAND = 'Vacant Land'
 
     class Provinces(models.TextChoices):
         EASTERN_CAPE = 'Eastern Cape'
@@ -62,7 +63,6 @@ class Listing(models.Model):
     bathrooms = models.IntegerField()
     home_type = models.CharField(max_length=50, choices=HomeType.choices, default=HomeType.HOUSE)
     sqft = models.IntegerField()
-    open_house = models.BooleanField(default=False)
     photo_main = models.ImageField(upload_to='photos/%Y/%m/%d/')
     # photo_1 = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True)
     # photo_2 = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True)
@@ -117,3 +117,4 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.email
+        
