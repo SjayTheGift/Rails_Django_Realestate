@@ -26,9 +26,10 @@ class ListingView(RetrieveAPIView):
 class SearchView(generics.ListAPIView):
     queryset = Listing.objects.order_by('-list_date').filter(is_published=True)
     serializer_class = ListingSerializer
-    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
+    filter_backends = [filters.OrderingFilter, DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['province', 'sale_type']
     ordering_fields = ['price', ]
+    search_fields = ['city',]
     
 
     def get_queryset(self, *args, **kwargs):
