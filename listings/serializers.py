@@ -19,7 +19,7 @@ class ListingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Listing
-        fields = ('id', 'title', 'address', 'city', 'province', 'price', 'sale_type', 'home_type', 'bedrooms', 'bathrooms', 'sqft', 'photo_main', 'slug' ,'link_url' )
+        fields = ('id', 'title', 'address', 'city', 'province', 'price', 'sale_type', 'home_type', 'bedrooms', 'bathrooms', 'sqft', 'photo_main' ,'link_url' )
 
     # def get_url(self, obj):
     #     return f'/realtor/{obj.pk}/'
